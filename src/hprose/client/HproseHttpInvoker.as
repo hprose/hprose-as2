@@ -13,7 +13,7 @@
  *                                                        *
  * hprose http invoker class for ActionScript 2.0.        *
  *                                                        *
- * LastModified: Mar 7, 2014                              *
+ * LastModified: Mar 8, 2014                              *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -26,7 +26,6 @@ import hprose.client.HproseSuccessEvent;
 import hprose.client.HproseErrorEvent;
 import hprose.client.HproseProgressEvent;
 import hprose.io.HproseReader;
-import hprose.io.HproseSimpleWriter;
 import hprose.io.HproseStringInputStream;
 import hprose.io.HproseStringOutputStream;
 import hprose.io.HproseTags;

@@ -13,7 +13,7 @@
  *                                                        *
  * hprose reader class for ActionScript 2.0.              *
  *                                                        *
- * LastModified: Mar 7, 2014                              *
+ * LastModified: Mar 8, 2014                              *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -27,7 +27,7 @@ import hprose.io.HproseTags;
 class hprose.io.HproseReader extends HproseRawReader {
     private var classref:Array;
     private var refer:Object;
-    public static var fakeReaderRefer:Object = {
+    private static var fakeReaderRefer:Object = {
         set: function (val) {},
         read: function (i:Number) {
             unexpectedTag(HproseTags.TagRef);
@@ -35,7 +35,7 @@ class hprose.io.HproseReader extends HproseRawReader {
         reset: function() {}
     };
 
-    public static function realReaderRefer():Object {
+    private static function realReaderRefer():Object {
         var ref:Array = [];
         return {
             set: function (val) {
@@ -244,6 +244,7 @@ class hprose.io.HproseReader extends HproseRawReader {
     public function readDate():Date {
         var tag = stream.getc();
         switch (tag) {
+            case HproseTags.TagNull: return null;
             case HproseTags.TagDate: return readDateWithoutTag();
             case HproseTags.TagRef: return readRef();
             default: unexpectedTag(tag);
@@ -282,6 +283,7 @@ class hprose.io.HproseReader extends HproseRawReader {
     public function readTime():Date {
         var tag = stream.getc();
         switch (tag) {
+            case HproseTags.TagNull: return null;
             case HproseTags.TagTime: return readTimeWithoutTag();
             case HproseTags.TagRef: return readRef();
             default: unexpectedTag(tag);
@@ -303,6 +305,9 @@ class hprose.io.HproseReader extends HproseRawReader {
     public function readString():String {
         var tag = stream.getc();
         switch (tag) {
+            case HproseTags.TagNull: return null;
+            case HproseTags.TagEmpty: return "";
+            case HproseTags.TagUTF8Char: return stream.getc();
             case HproseTags.TagString: return readStringWithoutTag();
             case HproseTags.TagRef: return readRef();
             default: unexpectedTag(tag);
@@ -320,6 +325,7 @@ class hprose.io.HproseReader extends HproseRawReader {
     public function readGuid():String {
         var tag = stream.getc();
         switch (tag) {
+            case HproseTags.TagNull: return null;
             case HproseTags.TagGuid: return readGuidWithoutTag();
             case HproseTags.TagRef: return readRef();
             default: unexpectedTag(tag);
@@ -340,6 +346,7 @@ class hprose.io.HproseReader extends HproseRawReader {
     public function readList():Array {
         var tag = stream.getc();
         switch (tag) {
+            case HproseTags.TagNull: return null;
             case HproseTags.TagList: return readListWithoutTag();
             case HproseTags.TagRef: return readRef();
             default: unexpectedTag(tag);
@@ -361,6 +368,7 @@ class hprose.io.HproseReader extends HproseRawReader {
     public function readMap():Object {
         var tag = stream.getc();
         switch (tag) {
+            case HproseTags.TagNull: return null;
             case HproseTags.TagMap: return readMapWithoutTag();
             case HproseTags.TagRef: return readRef();
             default: unexpectedTag(tag);
@@ -381,6 +389,7 @@ class hprose.io.HproseReader extends HproseRawReader {
     public function readObject():Object {
         var tag = stream.getc();
         switch(tag) {
+            case HproseTags.TagNull: return null;
             case HproseTags.TagClass: readClass(); return readObject();
             case HproseTags.TagObject: return readObjectWithoutTag();
             case HproseTags.TagRef: return readRef();

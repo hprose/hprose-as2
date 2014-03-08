@@ -34,7 +34,7 @@
 
 通过 *Hprose*，你就可以在这些语言之间方便高效的实现互通了。
 
-本项目是 Hprose 的 ActionScript 语言版本实现。
+本项目是 Hprose 的 ActionScript 2.0 语言版本实现。
 
 ## 使用
 

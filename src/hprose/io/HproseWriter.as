@@ -110,7 +110,7 @@ class hprose.io.HproseWriter {
             writeNumber(o);
             break;
         case String:
-            if (o.length == 1) {
+            if (o.length === 1) {
                 writeUTF8Char(o);
             }
             else {
