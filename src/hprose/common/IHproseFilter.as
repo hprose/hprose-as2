@@ -13,12 +13,12 @@
  *                                                        *
  * hprose filter interface for ActionScript 2.0.          *
  *                                                        *
- * LastModified: Nov 19, 2013                             *
+ * LastModified: Mar 17, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
 
 interface hprose.common.IHproseFilter {
-    function inputFilter(data: String):String;
-    function outputFilter(data: String):String;
+    function inputFilter(data: String, context: Object):String;
+    function outputFilter(data: String, context: Object):String;
 }
