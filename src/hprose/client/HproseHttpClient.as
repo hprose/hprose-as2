@@ -13,7 +13,7 @@
  *                                                        *
  * hprose http client class for ActionScript 2.0.         *
  *                                                        *
- * LastModified: Dec 24, 2013                             *
+ * LastModified: Mar 17, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -332,6 +332,6 @@ dynamic class hprose.client.HproseHttpClient extends Object {
             callback = args[count - 1];
             args.length--;
         }
-        return new HproseHttpInvoker(url, header, func, args, byref, callback, errorHandler, progressHandler, onerror, timeout, resultMode, simple, filter);
+        return new HproseHttpInvoker(url, header, func, args, byref, callback, errorHandler, progressHandler, onerror, timeout, resultMode, simple, filter, this);
     }
 }

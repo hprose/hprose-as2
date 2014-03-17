@@ -21,14 +21,15 @@
 import hprose.common.IHproseFilter;
 import hprose.io.HproseFormatter;
 import hprose.io.HproseTags;
+import hprose.client.HproseHttpClient;
 
 class hprose.client.HproseHttpRequest {
-    public static function post(url:String, header:Object, data:String, callback:Function, timeout:Number, filter:IHproseFilter) {
+    public static function post(url:String, header:Object, data:String, callback:Function, timeout:Number, filter:IHproseFilter, client:HproseHttpClient) {
         var lv:LoadVars = new LoadVars();
         var timeoutID:Number;
         lv.contentType = "application/hprose; charset=utf-8";
         lv.toString = function () {
-            return filter.outputFilter(data, lv);
+            return filter.outputFilter(data, client);
         }
         for (var name:String in header) {
             lv.addRequestHeader(name, header[name]);
@@ -36,7 +37,7 @@ class hprose.client.HproseHttpRequest {
         lv.onData = function (src:String) {
             _global.clearTimeout(timeoutID);
             if (src) {
-                callback(filter.inputFilter(src, lv));
+                callback(filter.inputFilter(src, client));
             }
             else {
                 callback(this.error);

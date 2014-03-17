@@ -13,7 +13,7 @@
  *                                                        *
  * hprose http invoker class for ActionScript 2.0.        *
  *                                                        *
- * LastModified: Mar 8, 2014                              *
+ * LastModified: Mar 17, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -21,6 +21,7 @@
 import hprose.common.HproseException;
 import hprose.common.IHproseFilter;
 import hprose.common.HproseResultMode;
+import hprose.client.HproseHttpClient;
 import hprose.client.HproseHttpRequest;
 import hprose.client.HproseSuccessEvent;
 import hprose.client.HproseErrorEvent;
@@ -50,8 +51,9 @@ class hprose.client.HproseHttpInvoker {
     private var resultMode:Number;
     private var simple:Boolean;
     private var filter:IHproseFilter;
+    private var client:HproseHttpClient;
 
-    public function HproseHttpInvoker(url:String, header:Object, func:String, args:Array, byref:Boolean, callback:Function, errorHandler:Function, progressHandler:Function, onerror:Array, timeout:Number, resultMode:Number, simple:Boolean, filter:IHproseFilter) {
+    public function HproseHttpInvoker(url:String, header:Object, func:String, args:Array, byref:Boolean, callback:Function, errorHandler:Function, progressHandler:Function, onerror:Array, timeout:Number, resultMode:Number, simple:Boolean, filter:IHproseFilter, client:HproseHttpClient) {
         this.url = url;
         this.header = header;
         this.func = func;
@@ -70,6 +72,7 @@ class hprose.client.HproseHttpInvoker {
         this.resultMode = resultMode;
         this.simple = simple;
         this.filter = filter;
+        this.client = client;
         if (callback) {
             start(callback, errorHandler, progressHandler);
         }
@@ -235,7 +238,7 @@ class hprose.client.HproseHttpInvoker {
                     invoker.fireEvent(invoker.globalonerror, new HproseErrorEvent(invoker.func, error));
                 }
             }
-        }, timeout, filter);
+        }, timeout, filter, client);
         function doprogress() {
             var byteloaded = invoker.lv.getBytesLoaded();
             var bytetotal = invoker.lv.getBytesTotal();
