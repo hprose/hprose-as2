@@ -13,14 +13,13 @@
  *                                                        *
  * hprose http client class for ActionScript 2.0.         *
  *                                                        *
- * LastModified: Mar 17, 2014                             *
+ * LastModified: Mar 23, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
 
 import hprose.common.HproseException;
 import hprose.common.IHproseFilter;
-import hprose.common.HproseFilter;
 import hprose.common.HproseResultMode;
 
 import hprose.client.HproseHttpInvoker;
@@ -29,22 +28,23 @@ dynamic class hprose.client.HproseHttpClient extends Object {
     private var url:String;
     private var header:Object;
     private var onerror:Array;
+    private var filters:Array;
     public var byref:Boolean;
     public var simple:Boolean;
     public var timeout:Number;
-    public var filter:IHproseFilter;
     public function HproseHttpClient(url:String) {
         this.url = null;
         this.header = {};
         this.onerror = [];
+        this.filters = [];
         this.byref = false;
         this.simple = false;
         this.timeout = 30000;
-        this.filter = new HproseFilter();
         if (url) {
             useService(url);
         }
     }
+
     private function __resolve(name:String):Function {
         function createProxy(client:HproseHttpClient, ns:String) {
             return function (n:String):Function {
@@ -68,6 +68,7 @@ dynamic class hprose.client.HproseHttpClient extends Object {
         }
         return createProxy(this, '')(name);
     }
+
     public function useService(url:String) {
         if (url != null) {
             this.url = url;
@@ -77,12 +78,40 @@ dynamic class hprose.client.HproseHttpClient extends Object {
         }
         return __resolve('');
     }
+
     public function set uri(value:String) {
         this.useService(value);
     }
 
     public function get uri():String {
         return this.url;
+    }
+
+    public function get filter():IHproseFilter {
+        if (filters.length === 0) {
+            return null;
+        }
+        return filters[0];
+    }
+
+    public function set filter(value:IHproseFilter) {
+        filters.length = 0;
+        if (value !== undefined && value !== null) {
+            filters.push(value);
+        }
+    }
+
+    public function addFilter(filter:IHproseFilter) {
+        filters.push(filter);
+    }
+
+    public function removeFilter(filter:IHproseFilter):Boolean {
+        var i = filters.indexOf(filter);
+        if (i === -1) {
+            return false;
+        }
+        filters.splice(i, 1);
+        return true;
     }
 
     public function setHeader(name:String, value:String) {
@@ -96,6 +125,7 @@ dynamic class hprose.client.HproseHttpClient extends Object {
             }
         }
     }
+
     public function addEventListener(type:String, listener:Function) {
         function addEvent(events:Array, listener:Function) {
             for (var i = 0, l = events.length; i < l; i++) {
@@ -130,6 +160,7 @@ dynamic class hprose.client.HproseHttpClient extends Object {
         }
         return this;
     }
+
     public function invoke():HproseHttpInvoker {
         var args:Array = arguments;
         var func:String = args.shift().toString();
@@ -332,6 +363,6 @@ dynamic class hprose.client.HproseHttpClient extends Object {
             callback = args[count - 1];
             args.length--;
         }
-        return new HproseHttpInvoker(url, header, func, args, byref, callback, errorHandler, progressHandler, onerror, timeout, resultMode, simple, filter, this);
+        return new HproseHttpInvoker(url, header, func, args, byref, callback, errorHandler, progressHandler, onerror, timeout, resultMode, simple, filters, this);
     }
 }

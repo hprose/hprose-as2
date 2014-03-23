@@ -13,7 +13,7 @@
  *                                                        *
  * hprose class loader for ActionScript 2.0.              *
  *                                                        *
- * LastModified: Mar 7, 2014                              *
+ * LastModified: Mar 23, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -21,7 +21,6 @@ import hprose.common.Map;
 import hprose.common.WeakMap;
 import hprose.common.HproseException;
 import hprose.common.IHproseFilter;
-import hprose.common.HproseFilter;
 import hprose.common.HproseResultMode;
 
 import hprose.client.HproseHttpClient;
@@ -46,7 +45,6 @@ class hprose.HproseLoader extends MovieClip {
         hprose.common.WeakMap;
         hprose.common.HproseException;
         hprose.common.IHproseFilter;
-        hprose.common.HproseFilter;
         hprose.common.HproseResultMode;
 
         hprose.client.HproseHttpClient;

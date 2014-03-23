@@ -13,7 +13,7 @@
  *                                                        *
  * hprose http request class for ActionScript 2.0.        *
  *                                                        *
- * LastModified: Mar 17, 2014                             *
+ * LastModified: Mar 23, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -24,12 +24,15 @@ import hprose.io.HproseTags;
 import hprose.client.HproseHttpClient;
 
 class hprose.client.HproseHttpRequest {
-    public static function post(url:String, header:Object, data:String, callback:Function, timeout:Number, filter:IHproseFilter, client:HproseHttpClient) {
+    public static function post(url:String, header:Object, data:String, callback:Function, timeout:Number, filters:Array, client:HproseHttpClient) {
         var lv:LoadVars = new LoadVars();
         var timeoutID:Number;
         lv.contentType = "application/hprose; charset=utf-8";
         lv.toString = function () {
-            return filter.outputFilter(data, client);
+            for (var i = 0, n = filters.length; i < n; i++) {
+                data = filters[i].outputFilter(data, client);
+            }
+            return data;
         }
         for (var name:String in header) {
             lv.addRequestHeader(name, header[name]);
@@ -37,7 +40,10 @@ class hprose.client.HproseHttpRequest {
         lv.onData = function (src:String) {
             _global.clearTimeout(timeoutID);
             if (src) {
-                callback(filter.inputFilter(src, client));
+                for (var i = filters.length - 1; i >= 0; i--) {
+                    src = filters[i].inputFilter(src, client);
+                }
+                callback(src);
             }
             else {
                 callback(this.error);
