@@ -14,7 +14,7 @@
  *                                                        *
  * Harmony Map for ActionScript 2.0.                      *
  *                                                        *
- * LastModified: Mar 7, 2014                              *
+ * LastModified: Mar 25, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -33,7 +33,7 @@ class hprose.common.Map {
                     return privates[n];
             }
             else {
-                baseValueOf.apply(this, arguments);
+                return baseValueOf.apply(this, arguments);
             }
         }
     }

@@ -14,7 +14,7 @@
  *                                                        *
  * Harmony WeakMap for ActionScript 2.0.                  *
  *                                                        *
- * LastModified: Nov 19, 2013                             *
+ * LastModified: Mar 25, 2014                             *
  * Author: Ma Bingyao <andot@hprose.com>                  *
  *                                                        *
 \**********************************************************/
@@ -33,7 +33,7 @@ class hprose.common.WeakMap {
                     return privates[n];
             }
             else {
-                baseValueOf.apply(this, arguments);
+                return baseValueOf.apply(this, arguments);
             }
         }
     }
